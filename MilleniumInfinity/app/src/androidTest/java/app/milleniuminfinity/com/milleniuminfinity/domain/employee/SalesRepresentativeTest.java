@@ -8,7 +8,7 @@ import java.util.Date;
 import junit.framework.Assert;
 
 public class SalesRepresentativeTest {
-    
+
     SalesRepresentative object = new SalesRepresentative();
 
     public void getEmployeeTest() 

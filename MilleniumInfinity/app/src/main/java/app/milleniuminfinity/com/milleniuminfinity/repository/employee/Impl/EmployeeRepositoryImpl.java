@@ -72,7 +72,7 @@ public class EmployeeRepositoryImpl extends SQLiteOpenHelper implements Employee
 
         if(cursor.moveToFirst())
         {
-            final Employee employee = new Employee().Builder()
+            final Employee employee = new Employee.Builder()
                     .employeeID(cursor.getString(0))
                     .name(cursor.getString(1))
                     .surname(cursor.getString(2))
@@ -100,10 +100,7 @@ public class EmployeeRepositoryImpl extends SQLiteOpenHelper implements Employee
 
         Long employeeID = database.insertOrThrow(TABLE_EMPLOYEE, null, values);
 
-        Employee insertedEntity = new Employee.Builder()
-                .copy(employee)
-                .employeeID(new String(employeeID))
-                .build();
+        Employee insertedEntity = employee;
 
         return insertedEntity;
     }
@@ -153,7 +150,7 @@ public class EmployeeRepositoryImpl extends SQLiteOpenHelper implements Employee
         if(cursor.moveToFirst())
         {
             do {
-                final Employee employee = new Employee().Builder()
+                final Employee employee = new Employee.Builder()
                         .employeeID(cursor.getString(0))
                         .name(cursor.getString(1))
                         .surname(cursor.getString(2))
@@ -164,6 +161,15 @@ public class EmployeeRepositoryImpl extends SQLiteOpenHelper implements Employee
         }
 
         return employees;
+    }
+
+    @Override
+    public int deleteAll() throws Exception
+    {
+        open();
+        int rowsDeleted = database.delete(TABLE_EMPLOYEE, null, null);
+        close();
+        return rowsDeleted;
     }
 
     @Override

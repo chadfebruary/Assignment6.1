@@ -11,6 +11,6 @@ public interface Repository <Entity, Identity> {
     Entity save(Entity entity) throws Exception;
     Entity update(Entity entity) throws Exception;
     Entity delete (Entity entity) throws Exception;
-
+    int deleteAll() throws Exception;
     Set<Entity> findAll() throws Exception;
 }

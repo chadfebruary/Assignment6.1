@@ -92,10 +92,7 @@ public class ShopRepositoryImpl extends SQLiteOpenHelper implements ShopReposito
 
         Long shopNumber = database.insertOrThrow(TABLE_SHOP, null, values);
 
-        Shop insertedShop = new Shop.Builder()
-                .copy(shop)
-                .shopNumber(new String(shopNumber))
-                .build();
+        Shop insertedShop = shop;
 
         return insertedShop;
     }
@@ -158,6 +155,15 @@ public class ShopRepositoryImpl extends SQLiteOpenHelper implements ShopReposito
         }
 
         return shops;
+    }
+
+    @Override
+    public int deleteAll() throws Exception
+    {
+        open();
+        int rowsDeleted = database.delete(TABLE_SHOP, null, null);
+        close();
+        return rowsDeleted;
     }
 
     @Override

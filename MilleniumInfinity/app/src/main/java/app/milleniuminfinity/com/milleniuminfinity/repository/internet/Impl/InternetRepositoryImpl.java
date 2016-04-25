@@ -55,7 +55,7 @@ public class InternetRepositoryImpl extends SQLiteOpenHelper implements Internet
     }
 
     @Override
-    public Internet findById(String isp)
+    public Internet findById(String ipAddress)
     {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.query(
@@ -67,7 +67,7 @@ public class InternetRepositoryImpl extends SQLiteOpenHelper implements Internet
                         COLUMN_PRICE,
                         COLUMN_DATAALLOWANCE},
                 COLUMN_ISP + " =? ",
-                new String[]{String.valueOf(isp)},
+                new String[]{String.valueOf(ipAddress)},
                 null,
                 null,
                 null,
@@ -103,10 +103,7 @@ public class InternetRepositoryImpl extends SQLiteOpenHelper implements Internet
 
         Long ipAddress = database.insertOrThrow(TABLE_INTERNET, null, values);
 
-        Internet insertedEntity = new Internet.Builder()
-                .copy(internet)
-                .ipAddress(new String(ipAddress))
-                .build();
+        Internet insertedEntity = internet;
 
         return insertedEntity;
     }
@@ -165,11 +162,21 @@ public class InternetRepositoryImpl extends SQLiteOpenHelper implements Internet
                             .price(cursor.getString(3))
                             .dataAllowance(cursor.getString(4))
                             .build();
+
                     internetServices.add(internet);
                 }while(cursor.moveToNext());
         }
 
         return internetServices;
+    }
+
+    @Override
+    public int deleteAll() throws Exception
+    {
+        open();
+        int rowsDeleted = database.delete(TABLE_INTERNET, null, null);
+        close();
+        return rowsDeleted;
     }
 
     @Override
